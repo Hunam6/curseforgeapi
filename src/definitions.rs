@@ -4,6 +4,7 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::collections::HashMap;
 
 pub const CF_URL: &str = "https://api.curseforge.com/v1";
+pub const CF_V2_URL: &str = "https://api.curseforge.com/v2";
 
 // ============================================================================
 // ENUMS
@@ -201,7 +202,7 @@ pub struct GameVersion {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GameVersionsByType {
+pub struct GameVersionsByTypeV1 {
     #[serde(rename = "type")]
     pub version_type: i32,
     pub versions: Vec<String>,
@@ -209,7 +210,7 @@ pub struct GameVersionsByType {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GameVersionsByType2 {
+pub struct GameVersionsByType {
     #[serde(rename = "type")]
     pub version_type: i32,
     pub versions: Vec<GameVersion>,
@@ -693,12 +694,12 @@ pub struct GetVersionTypesResponse {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetVersionsResponseV1 {
-    pub data: Vec<GameVersionsByType>,
+    pub data: Vec<GameVersionsByTypeV1>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetVersionsResponseV2 {
-    pub data: Vec<GameVersionsByType2>,
+pub struct GetVersionsResponse {
+    pub data: Vec<GameVersionsByType>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
