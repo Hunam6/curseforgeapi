@@ -1,10 +1,11 @@
 use crate::definitions::{
     GetCategoriesParams, GetCategoriesResponse, GetFeaturedModsRequestBody, GetFeaturedModsResponse, GetFilesResponse,
-    GetGameResponse, GetGamesParams, GetGamesResponse, GetModDescriptionParams, GetModFileResponse,
-    GetModFilesParams, GetModFilesRequestBody, GetModFilesResponse, GetModResponse,
-    GetModsRequestBody, GetModsResponse, GetVersionTypesResponse, GetVersionsResponse,
-    GetVersionsResponseV1, SearchModsParams, SearchModsResponse, StringResponse,
-    CF_URL, CF_V2_URL,
+    GetFingerprintMatchesRequestBody, GetFingerprintMatchesResponse, GetFingerprintsFuzzyMatchesResponse,
+    GetFuzzyMatchesRequestBody, GetGameResponse, GetGamesParams,
+    GetGamesResponse, GetModDescriptionParams, GetModFileResponse, GetModFilesParams, GetModFilesRequestBody,
+    GetModFilesResponse, GetModResponse, GetModsRequestBody, GetModsResponse,
+    GetVersionTypesResponse, GetVersionsResponse, GetVersionsResponseV1, SearchModsParams,
+    SearchModsResponse, StringResponse, CF_URL, CF_V2_URL,
 };
 use crate::CurseForge;
 use anyhow::Result;
@@ -108,6 +109,39 @@ impl CurseForge {
     ) -> Result<StringResponse> {
         let url = format!("{CF_URL}/mods/{mod_id}/files/{file_id}/download-url");
         self.get(&url, &()).await
+    }
+
+    pub async fn get_fingerprints_matches_by_game_id(
+        &self,
+        game_id: i32,
+        body: &GetFingerprintMatchesRequestBody,
+    ) -> Result<GetFingerprintMatchesResponse> {
+        let url = format!("{CF_URL}/fingerprints/{game_id}");
+        self.post(&url, body).await
+    }
+
+    pub async fn get_fingerprints_matches(
+        &self,
+        body: &GetFingerprintMatchesRequestBody,
+    ) -> Result<GetFingerprintMatchesResponse> {
+        self.post(concatcp!(CF_URL, "/fingerprints"), body).await
+    }
+
+    pub async fn get_fingerprints_fuzzy_matches_by_game_id(
+        &self,
+        game_id: i32,
+        body: &GetFuzzyMatchesRequestBody,
+    ) -> Result<GetFingerprintsFuzzyMatchesResponse> {
+        let url = format!("{CF_URL}/fingerprints/fuzzy/{game_id}");
+        self.post(&url, body).await
+    }
+
+    pub async fn get_fingerprints_fuzzy_matches(
+        &self,
+        body: &GetFuzzyMatchesRequestBody,
+    ) -> Result<GetFingerprintsFuzzyMatchesResponse> {
+        self.post(concatcp!(CF_URL, "/fingerprints/fuzzy"), body)
+            .await
     }
 
     async fn get<P, R>(&self, url: &str, params: &P) -> Result<R>
