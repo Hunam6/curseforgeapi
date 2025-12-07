@@ -461,8 +461,6 @@ pub struct MinecraftModLoaderIndex {
     pub latest: bool,
     pub recommended: bool,
     pub date_modified: DateTime<Utc>,
-    #[serde(rename = "type")]
-    pub loader_type: ModLoaderType,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -486,7 +484,7 @@ pub struct MinecraftModLoaderVersion {
     pub version_json: String,
     pub libraries_install_location: String,
     pub minecraft_version: String,
-    pub additional_files_json: String,
+    pub additional_files_json: Option<String>,
     pub mod_loader_game_version_id: i32,
     pub mod_loader_game_version_type_id: i32,
     pub mod_loader_game_version_status: GameVersionStatus,
@@ -495,7 +493,7 @@ pub struct MinecraftModLoaderVersion {
     pub mc_game_version_type_id: i32,
     pub mc_game_version_status: GameVersionStatus,
     pub mc_game_version_type_status: GameVersionTypeStatus,
-    pub install_profile_json: String,
+    pub install_profile_json: Option<String>,
 }
 
 // ============================================================================
@@ -652,22 +650,22 @@ pub struct StringResponse {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ApiResponseOfListOfMinecraftGameVersion {
+pub struct GetMinecraftVersionsResponse {
     pub data: Vec<MinecraftGameVersion>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ApiResponseOfListOfMinecraftModLoaderIndex {
+pub struct GetMinecraftModLoadersResponse {
     pub data: Vec<MinecraftModLoaderIndex>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ApiResponseOfMinecraftGameVersion {
+pub struct GetMinecraftVersionResponse {
     pub data: MinecraftGameVersion,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ApiResponseOfMinecraftModLoaderVersion {
+pub struct GetMinecraftModLoaderResponse {
     pub data: MinecraftModLoaderVersion,
 }
 

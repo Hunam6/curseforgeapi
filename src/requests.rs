@@ -2,10 +2,13 @@ use crate::definitions::{
     GetCategoriesParams, GetCategoriesResponse, GetFeaturedModsRequestBody, GetFeaturedModsResponse, GetFilesResponse,
     GetFingerprintMatchesRequestBody, GetFingerprintMatchesResponse, GetFingerprintsFuzzyMatchesResponse,
     GetFuzzyMatchesRequestBody, GetGameResponse, GetGamesParams,
-    GetGamesResponse, GetModDescriptionParams, GetModFileResponse, GetModFilesParams, GetModFilesRequestBody,
-    GetModFilesResponse, GetModResponse, GetModsRequestBody, GetModsResponse,
-    GetVersionTypesResponse, GetVersionsResponse, GetVersionsResponseV1, SearchModsParams,
-    SearchModsResponse, StringResponse, CF_URL, CF_V2_URL,
+    GetGamesResponse, GetMinecraftModLoaderResponse, GetMinecraftModLoadersParams, GetMinecraftModLoadersResponse,
+    GetMinecraftVersionResponse, GetMinecraftVersionsParams, GetMinecraftVersionsResponse,
+    GetModDescriptionParams, GetModFileResponse, GetModFilesParams,
+    GetModFilesRequestBody, GetModFilesResponse, GetModResponse, GetModsRequestBody,
+    GetModsResponse, GetVersionTypesResponse, GetVersionsResponse, GetVersionsResponseV1,
+    SearchModsParams, SearchModsResponse, StringResponse, CF_URL,
+    CF_V2_URL,
 };
 use crate::CurseForge;
 use anyhow::Result;
@@ -142,6 +145,38 @@ impl CurseForge {
     ) -> Result<GetFingerprintsFuzzyMatchesResponse> {
         self.post(concatcp!(CF_URL, "/fingerprints/fuzzy"), body)
             .await
+    }
+
+    pub async fn get_minecraft_versions(
+        &self,
+        params: &GetMinecraftVersionsParams,
+    ) -> Result<GetMinecraftVersionsResponse> {
+        self.get(concatcp!(CF_URL, "/minecraft/versions"), params)
+            .await
+    }
+
+    pub async fn get_minecraft_version(
+        &self,
+        version: &str,
+    ) -> Result<GetMinecraftVersionResponse> {
+        let url = format!("{CF_URL}/minecraft/versions/{version}");
+        self.get(&url, &()).await
+    }
+
+    pub async fn get_minecraft_mod_loaders(
+        &self,
+        params: &GetMinecraftModLoadersParams,
+    ) -> Result<GetMinecraftModLoadersResponse> {
+        self.get(concatcp!(CF_URL, "/minecraft/modloader"), params)
+            .await
+    }
+
+    pub async fn get_minecraft_mod_loader(
+        &self,
+        mod_loader: &str,
+    ) -> Result<GetMinecraftModLoaderResponse> {
+        let url = format!("{CF_URL}/minecraft/modloader/{mod_loader}");
+        self.get(&url, &()).await
     }
 
     async fn get<P, R>(&self, url: &str, params: &P) -> Result<R>
