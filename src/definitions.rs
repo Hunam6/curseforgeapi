@@ -637,7 +637,7 @@ pub struct GetModFilesRequestBody {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetModsByIdsListRequestBody {
+pub struct GetModsRequestBody {
     pub mod_ids: Vec<i32>,
     pub filter_pc_only: Option<bool>,
 }

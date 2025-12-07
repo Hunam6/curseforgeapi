@@ -1,6 +1,8 @@
 use crate::definitions::{
-    GetCategoriesParams, GetCategoriesResponse, GetGameResponse, GetGamesParams, GetGamesResponse, GetVersionTypesResponse,
-    GetVersionsResponse, GetVersionsResponseV1, SearchModsParams, SearchModsResponse,
+    GetCategoriesParams, GetCategoriesResponse, GetFeaturedModsRequestBody, GetFeaturedModsResponse, GetGameResponse,
+    GetGamesParams, GetGamesResponse, GetModDescriptionParams, GetModResponse,
+    GetModsRequestBody, GetModsResponse, GetVersionTypesResponse, GetVersionsResponse,
+    GetVersionsResponseV1, SearchModsParams, SearchModsResponse, StringResponse,
     CF_URL, CF_V2_URL,
 };
 use crate::CurseForge;
@@ -46,6 +48,31 @@ impl CurseForge {
         self.get(concatcp!(CF_URL, "/mods/search"), params).await
     }
 
+    pub async fn get_mod(&self, mod_id: i32) -> Result<GetModResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}");
+        self.get(&url, &()).await
+    }
+
+    pub async fn get_mods(&self, body: &GetModsRequestBody) -> Result<GetModsResponse> {
+        self.post(concatcp!(CF_URL, "/mods"), body).await
+    }
+
+    pub async fn get_featured_mods(
+        &self,
+        body: &GetFeaturedModsRequestBody,
+    ) -> Result<GetFeaturedModsResponse> {
+        self.post(concatcp!(CF_URL, "/mods/featured"), body).await
+    }
+
+    pub async fn get_mod_description(
+        &self,
+        mod_id: i32,
+        params: &GetModDescriptionParams,
+    ) -> Result<StringResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}/description");
+        self.get(&url, &params).await
+    }
+
     async fn get<P, R>(&self, url: &str, params: &P) -> Result<R>
     where
         P: Serialize + ?Sized,
@@ -55,6 +82,22 @@ impl CurseForge {
             .client
             .get(url)
             .query(params)
+            .send()
+            .await?
+            .error_for_status()?
+            .json::<R>()
+            .await?)
+    }
+
+    async fn post<B, R>(&self, url: &str, body: &B) -> Result<R>
+    where
+        B: Serialize + ?Sized,
+        R: DeserializeOwned,
+    {
+        Ok(self
+            .client
+            .post(url)
+            .json(body)
             .send()
             .await?
             .error_for_status()?
