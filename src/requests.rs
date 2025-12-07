@@ -1,6 +1,7 @@
 use crate::definitions::{
-    GetCategoriesParams, GetCategoriesResponse, GetFeaturedModsRequestBody, GetFeaturedModsResponse, GetGameResponse,
-    GetGamesParams, GetGamesResponse, GetModDescriptionParams, GetModResponse,
+    GetCategoriesParams, GetCategoriesResponse, GetFeaturedModsRequestBody, GetFeaturedModsResponse, GetFilesResponse,
+    GetGameResponse, GetGamesParams, GetGamesResponse, GetModDescriptionParams, GetModFileResponse,
+    GetModFilesParams, GetModFilesRequestBody, GetModFilesResponse, GetModResponse,
     GetModsRequestBody, GetModsResponse, GetVersionTypesResponse, GetVersionsResponse,
     GetVersionsResponseV1, SearchModsParams, SearchModsResponse, StringResponse,
     CF_URL, CF_V2_URL,
@@ -71,6 +72,42 @@ impl CurseForge {
     ) -> Result<StringResponse> {
         let url = format!("{CF_URL}/mods/{mod_id}/description");
         self.get(&url, &params).await
+    }
+
+    pub async fn get_mod_file(&self, mod_id: i32, file_id: i32) -> Result<GetModFileResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}/files/{file_id}");
+        self.get(&url, &()).await
+    }
+
+    pub async fn get_mod_files(
+        &self,
+        mod_id: i32,
+        params: &GetModFilesParams,
+    ) -> Result<GetModFilesResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}/files");
+        self.get(&url, &params).await
+    }
+
+    pub async fn get_files(&self, body: &GetModFilesRequestBody) -> Result<GetFilesResponse> {
+        self.post(concatcp!(CF_URL, "/mods/files"), body).await
+    }
+
+    pub async fn get_mod_files_changelog(
+        &self,
+        mod_id: i32,
+        file_id: i32,
+    ) -> Result<StringResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}/files/{file_id}/changelog");
+        self.get(&url, &()).await
+    }
+
+    pub async fn get_mod_file_download_url(
+        &self,
+        mod_id: i32,
+        file_id: i32,
+    ) -> Result<StringResponse> {
+        let url = format!("{CF_URL}/mods/{mod_id}/files/{file_id}/download-url");
+        self.get(&url, &()).await
     }
 
     async fn get<P, R>(&self, url: &str, params: &P) -> Result<R>
