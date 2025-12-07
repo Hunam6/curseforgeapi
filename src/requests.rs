@@ -1,6 +1,7 @@
 use crate::definitions::{
-    GetGameResponse, GetGamesParams, GetGamesResponse, GetVersionTypesResponse, GetVersionsResponse, GetVersionsResponseV1,
-    SearchModsParams, SearchModsResponse, CF_URL, CF_V2_URL,
+    GetCategoriesParams, GetCategoriesResponse, GetGameResponse, GetGamesParams, GetGamesResponse, GetVersionTypesResponse,
+    GetVersionsResponse, GetVersionsResponseV1, SearchModsParams, SearchModsResponse,
+    CF_URL, CF_V2_URL,
 };
 use crate::CurseForge;
 use anyhow::Result;
@@ -32,6 +33,13 @@ impl CurseForge {
     pub async fn get_versions(&self, game_id: i32) -> Result<GetVersionsResponse> {
         let url = format!("{CF_V2_URL}/games/{game_id}/versions");
         self.get(&url, &()).await
+    }
+
+    pub async fn get_categories(
+        &self,
+        params: &GetCategoriesParams,
+    ) -> Result<GetCategoriesResponse> {
+        self.get(concatcp!(CF_URL, "/categories"), params).await
     }
 
     pub async fn search_mods(&self, params: &SearchModsParams) -> Result<SearchModsResponse> {
