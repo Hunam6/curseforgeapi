@@ -4,6 +4,8 @@ description = "A complete Rust wrapper."
 license = "MIT"
 version = "1.0.0"
 edition = "2024"
+readme = "README.md"
+repository = "https://github.com/Hunam6/curseforgeapi"
 
 [dependencies]
 chrono = { version = "0.4.42", features = ["serde"] }
