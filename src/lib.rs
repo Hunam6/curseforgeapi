@@ -29,21 +29,28 @@ impl CurseForge {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::definitions::GetGamesParams;
+    use crate::definitions::SearchModsParams;
 
     #[tokio::test]
-    async fn manual_testing() {
+    async fn manual_testing() -> Result<()> {
         dotenvy::dotenv().ok();
-        let cf = CurseForge::new(std::env::var("CURSE_FORGE_API_KEY").unwrap().as_str()).unwrap();
+        let api_key = std::env::var("CURSEFORGE_API_KEY")?;
 
-        dbg!(
-            cf.get_games(&GetGamesParams {
+        let cf = CurseForge::new(&api_key)?;
+
+        // Search for Minecraft mods
+        let mods = cf
+            .search_mods(&SearchModsParams {
+                game_id: 432, // Minecraft
+                search_filter: Some("jei".to_string()),
                 ..Default::default()
             })
-            .await
-            .unwrap()
-        );
+            .await?;
 
-        ()
+        for m in mods.data {
+            println!("{} - {} downloads", m.name, m.download_count);
+        }
+
+        Ok(())
     }
 }
