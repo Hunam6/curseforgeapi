@@ -1,5 +1,7 @@
 [package]
 name = "curseforgeapi"
+description = "A complete Rust wrapper."
+license = "MIT"
 version = "1.0.0"
 edition = "2024"
 
