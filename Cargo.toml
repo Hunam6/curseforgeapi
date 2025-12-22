@@ -2,7 +2,7 @@
 name = "curseforgeapi"
 description = "A complete Rust wrapper."
 license = "MIT"
-version = "1.0.2"
+version = "1.0.3"
 edition = "2024"
 readme = "README.md"
 repository = "https://github.com/Hunam6/curseforgeapi"

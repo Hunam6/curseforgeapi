@@ -1,8 +1,8 @@
 use anyhow::Result;
 use reqwest::header::{HeaderMap, HeaderValue};
 
-mod definitions;
-mod requests;
+pub mod definitions;
+pub mod requests;
 
 pub struct CurseForge {
     client: reqwest::Client,
