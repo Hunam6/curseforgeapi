@@ -2,10 +2,12 @@
 name = "curseforgeapi"
 description = "A complete Rust wrapper."
 license = "MIT"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2024"
 readme = "README.md"
 repository = "https://github.com/Hunam6/curseforgeapi"
+keywords = ["curseforge", "curse", "forge", "api", "wrapper"]
+categories = ["api-bindings"]
 
 [dependencies]
 chrono = { version = "0.4.42", features = ["serde"] }

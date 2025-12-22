@@ -42,7 +42,9 @@ mod tests {
         let mods = cf
             .search_mods(&SearchModsParams {
                 game_id: 432, // Minecraft
-                search_filter: Some("jei".to_string()),
+                search_filter: Some("Complementary Shaders".to_string()),
+                sort_field: Some(definitions::ModsSearchSortField::TotalDownloads),
+                sort_order: Some(definitions::SortOrder::Desc),
                 ..Default::default()
             })
             .await?;
